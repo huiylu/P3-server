@@ -4,7 +4,7 @@ const router = express.Router();
 
 //get route that show the persons profile
 router.get('/profile/:id', (req, res) => {
-
+    res.json({ message: 'PROFILE POST'});
 });
 
 //put route that lets you update personal details
