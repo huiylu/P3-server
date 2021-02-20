@@ -4,7 +4,7 @@ const router = express.Router();
 
 //get route displays the playlists
 router.get('/playlist', (req, res) => {
-
+    res.json({ message: 'PLAYLIST POST'});
 });
 
 //post route allows you to create a new playlist
