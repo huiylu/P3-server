@@ -9,7 +9,7 @@ const songSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    id: String
+    spotify_id: String
 })
 
 const playlistSchema = new mongoose.Schema({
