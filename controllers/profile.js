@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 
 
 //get route that show the persons profile
-router.get('/:id', (req, res) => {
+router.get('/:id', passport.authenticate('jwt', { session: false}), (req, res) => {
     /*
     res.status(200).json({
         message: 'Veiw message'
@@ -17,7 +17,9 @@ router.get('/:id', (req, res) => {
     let token = req.header.authorization.split(' ')[1];
     let decoded = jwt.verify(token, process.env.JWT_SECRET);
     */
-    db.User.findById(req.params.id)
+   let token = req.header.authorization.split(' ')[1];
+   let decoded = jwt.verify(token, process.env.JWT_SECRET);
+    db.User.findById(decoded.id)
     .then(user => {
       res.status(201).json(user);
     });

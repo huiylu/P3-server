@@ -11,7 +11,8 @@ const songSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    spotify_id: String
+    spotify_id: String,
+    spotify_uri: String
 })
 
 const playlistSchema = new mongoose.Schema({
