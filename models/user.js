@@ -12,6 +12,8 @@ const options = {
   }
 }
 
+
+//Create embedded playlist
 const userSchema = new mongoose.Schema({
   name: {
     type: String,

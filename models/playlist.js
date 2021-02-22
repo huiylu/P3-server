@@ -4,12 +4,14 @@ const options = {
     timestamps: true
 }
 
+
+// Create relational with songs
 const songSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
     },
-    id: String
+    spotify_id: String
 })
 
 const playlistSchema = new mongoose.Schema({
