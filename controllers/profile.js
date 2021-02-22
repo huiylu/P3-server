@@ -1,26 +1,35 @@
+const bcrypt = require('bcrypt');
 const express = require('express');
+const { createUserToken } = require('../middleware/auth');
 const db = require('../models');
+const passport = require('passport');
 const router = express.Router();
-const User = require('../models/user');
-const {findById} = require('../models/user');
+const jwt = require('jsonwebtoken');
+
 
 //get route that show the persons profile
-router.get('/:_id', (req, res) => {
-    // res.json({ message: 'PROFILE POST'});
+router.get('/:id', (req, res) => {
+    /*
+    res.status(200).json({
+        message: 'Veiw message'
+      })
     //find the user by id : findById()
-    User.findById(req.params.id, (err, user) => {
-        if(err) {
-            console.error(`Error in the GET ID for playlists\n${err}`);
-            res.status(500).json({error: `Error in the Detail ROUTE for playlists`});
-        }
-        res.json({user});
-    })
+    let token = req.header.authorization.split(' ')[1];
+    let decoded = jwt.verify(token, process.env.JWT_SECRET);
+    */
+    db.User.findById(req.params.id)
+    .then(user => {
+      res.status(201).json(user);
+    });
     
 });
 
 //put route that lets you update personal details
 router.put('/:id', (req, res) => {
-
+    db.User.findById(req.params.id, {name: req.body.name})
+    .then(user => {
+      res.status(201).json(user);
+    });
 });
 
 
