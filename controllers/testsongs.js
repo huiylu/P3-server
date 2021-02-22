@@ -33,7 +33,7 @@ request.post(authOptions, function(error, response, body) {
   if (!error && response.statusCode === 200) {
 
     // use the access token to access the Spotify Web API
-    var token = process.env.ACCESS_TOKEN;
+    var token = body.access_token;
     var options = {
       url: 'https://api.spotify.com/v1/users/227ya6fgh5b4yijolk5xn5uji',
       headers: {
