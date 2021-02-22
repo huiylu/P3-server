@@ -14,6 +14,7 @@ app.get('/', (req, res) => {
   res.json({ message: "Spotify Api Home"});
 });
 
+
 // Controllers
 app.use('/api', require('./controllers/auth'));
 app.use('/profile', require('./controllers/profile'))

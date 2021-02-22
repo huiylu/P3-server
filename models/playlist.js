@@ -4,6 +4,8 @@ const options = {
     timestamps: true
 }
 
+
+// Create relational with songs
 const songSchema = new mongoose.Schema({
     name: {
         type: String,
