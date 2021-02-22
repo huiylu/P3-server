@@ -35,7 +35,10 @@ router.put('/:id', (req, res) => {
 
 //delete route in case you want to delete your profile
 router.delete('/:id', (req, res) => {
-
+    db.User.findByIdAndDelete(req.params.id)
+    .then( () => {
+      res.status(201).json('Deleted user');
+    });
 });
 
 module.exports = router;
