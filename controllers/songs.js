@@ -25,15 +25,16 @@ router.get('/', (req, res) => {
     axios.post('https://accounts.spotify.com/api/token', querystring.stringify(data),headers)
     .then(response => {
       var token = response.data.access_token;
-      console.log(response.data)
+      let returnSearch = Object.values(req.query)[0]
+      console.log('🔥', returnSearch)
       
         headers ={headers: {
           Authorization: 'Bearer ' + token,
           'Content-Type': 'application/x-www-form-urlencoded'
         }};
-        axios.get(`https://api.spotify.com/v1/search?q=${req.body.search}&type=track&market=US&limit=10&offset=5` ,headers)
+        axios.get(`https://api.spotify.com/v1/search?q=${returnSearch}&type=track&market=US&limit=10&offset=5` ,headers)
         .then (response => {
-          console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', (response.data));
+          console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', (response.query));
           res.json({
             name: response.data.tracks.items[0].album.name,
             uri: response.data.tracks.items[0].album.uri
