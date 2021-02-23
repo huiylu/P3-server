@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 
 
 //get route that show the persons profile
-router.get('/:id', (req, res) => {
+router.get('/:id', passport.authenticate('jwt', { session: false}), (req, res) => {
     /*
     res.status(200).json({
         message: 'Veiw message'
@@ -17,7 +17,9 @@ router.get('/:id', (req, res) => {
     let token = req.header.authorization.split(' ')[1];
     let decoded = jwt.verify(token, process.env.JWT_SECRET);
     */
-    db.User.findById(req.params.id)
+   let token = req.header.authorization.split(' ')[1];
+   let decoded = jwt.verify(token, process.env.JWT_SECRET);
+    db.User.findById(decoded.id)
     .then(user => {
       res.status(201).json(user);
     });
@@ -35,13 +37,10 @@ router.put('/:id', (req, res) => {
 
 //delete route in case you want to delete your profile
 router.delete('/:id', (req, res) => {
-    User.findByIdAndDelete(req.params.id, (err, user) => {
-        if(err) {
-            console.error(`ERROR in the playlist DELETE ROUTE\n${err}`);
-            res.status(500).json({error: `ERROR in the playlists DELETE ROUTE`});
-        }
-        res.json({deletedUser: user})
-    })
+    db.User.findByIdAndDelete(req.params.id)
+    .then( () => {
+      res.status(201).json('Deleted user');
+    });
 });
 
 module.exports = router;

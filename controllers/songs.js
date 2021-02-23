@@ -34,7 +34,10 @@ router.get('/', (req, res) => {
         axios.get(`https://api.spotify.com/v1/search?q=${req.body.search}&type=track&market=US&limit=10&offset=5` ,headers)
         .then (response => {
           console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', (response.data));
-          res.json(response.data)
+          res.json({
+            name: response.data.tracks.items[0].album.name,
+            uri: response.data.tracks.items[0].album.uri
+          })
         }).catch(err => {
           if (err) {
             console.error(`WE HAVE AN ERROR IN THE AXIOS Get`+ err);
