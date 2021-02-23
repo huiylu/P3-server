@@ -34,10 +34,13 @@ router.get('/', (req, res) => {
         }};
         axios.get(`https://api.spotify.com/v1/search?q=${returnSearch}&type=track&market=US&limit=10&offset=5` ,headers)
         .then (response => {
+
           console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', (response.query));
+        
+          //must have .album.name or .album.uri
+
           res.json({
-            name: response.data.tracks.items[0].album.name,
-            uri: response.data.tracks.items[0].album.uri
+            song: response.data.tracks.items
           })
         }).catch(err => {
           if (err) {
