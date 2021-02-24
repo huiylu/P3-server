@@ -41,7 +41,7 @@ const createUserToken = (req, user) => {
     return jwt.sign(
       { id: user._id, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: '20m'} // TODO: extend for production
+      { expiresIn: '24h'} // TODO: extend for production
     );
   }
 }
