@@ -22,4 +22,4 @@ mongoose.connection.on('error', err =>
 );
 
 // export
-module.exports.User = require('./user');                        
+module.exports.User = require('./user');

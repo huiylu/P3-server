@@ -25,9 +25,6 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  },
-  playlist_id: {
-    type: [String]
   }
 }, options);
 
