@@ -54,7 +54,11 @@ router.get('/', (req, res) => {
       returnSearch = Object.values(req.query)[0]
         axios.get(`https://api.spotify.com/v1/search?q=${returnSearch}&type=track&market=US&limit=10&offset=5` , headers)
         .then (response => {
+<<<<<<< HEAD
           console.log('🦀', (returnSearch));
+=======
+          console.log('🦀', (response.query));
+>>>>>>> da9b33980de67f54a2dfdb3a5783d34ee1849a67
           //must have .album.name or .album.uri
           res.json({
             song: response.data.tracks.items
