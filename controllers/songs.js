@@ -22,10 +22,12 @@ const data = {
 
 //get route to display the searched songs
 router.get('/', (req, res) => {
+  console.log(querystring.stringify(data));
+  console.log(headers);
     axios.post('https://accounts.spotify.com/api/token', querystring.stringify(data),headers)
     .then(response => {
       var token = response.data.access_token;
-      let returnSearch = Object.values(req.query)[0]
+      let returnSearch = Object.values(req.query)
       console.log('🔥', returnSearch)
       
         headers ={headers: {
@@ -44,13 +46,13 @@ router.get('/', (req, res) => {
           })
         }).catch(err => {
           if (err) {
-            console.error(`WE HAVE AN ERROR IN THE AXIOS Get`+ err);
+            console.error(`WE HAVE AN ERROR IN THE AXIOS Get `+ err);
           }
         })
         
     }).catch(err => {
       if (err) {
-        console.error(`WE HAVE AN ERROR IN THE AXIOS CALL`+ err);
+        console.error(`WE HAVE AN ERROR IN THE AXIOS CALL `+ err);
       }
       
     })
