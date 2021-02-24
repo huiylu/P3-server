@@ -51,18 +51,15 @@ router.get('/', (req, res) => {
               if (err) {
                 console.error(`WE HAVE AN ERROR IN THE AXIOS Get` + err);
               }
-            })
+            })}
   
-        }).catch(err => {
+          }).catch(err => {
           if (err) {
             console.error(`WE HAVE AN ERROR IN THE AXIOS CALL` + err);
             console.log('ERROR MESSAGE CONSOLE LOG', err.message)
           }
         })
 
-        }
-
-  });
 
 
 module.exports = router;
