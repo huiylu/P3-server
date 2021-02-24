@@ -6,6 +6,8 @@ const querystring = require('querystring')
 
 var client_id = process.env.CLIENT_ID; // Your client id
 var client_secret = process.env.CLIENT_SECRET; // Your secret
+var token;
+var returnSearch;
 
 var headers = {
   headers: {
@@ -22,21 +24,22 @@ const data = {
 
 //get route to display the searched songs
 router.get('/', (req, res) => {
+    if (!token) {
     axios.post('https://accounts.spotify.com/api/token', querystring.stringify(data),headers)
     .then(response => {
-      var token = response.data.access_token;
-      let returnSearch = Object.values(req.query)[0]
+      token = response.data.access_token;
+      returnSearch = Object.values(req.query)[0]
       console.log('🔥', returnSearch)
       
-        headers ={headers: {
-          Authorization: 'Bearer ' + token,
+        headers = { headers: {
+          'Authorization': 'Bearer ' + token,
           'Content-Type': 'application/x-www-form-urlencoded'
-        }};
-        axios.get(`https://api.spotify.com/v1/search?q=${returnSearch}&type=track&market=US&limit=10&offset=5` ,headers)
-        .then (response => {
-
-          console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', (response.query));
-        
+        }}
+        console.log(headers)
+      })
+      axios.get(`https://api.spotify.com/v1/search?q=${returnSearch}&type=track&market=US&limit=10&offset=5`, headers)
+        .then(res => {
+   
           //must have .album.name or .album.uri
 
           res.json({
@@ -46,13 +49,40 @@ router.get('/', (req, res) => {
           if (err) {
             console.error(`WE HAVE AN ERROR IN THE AXIOS Get`+ err);
           }
-        })
-        
-    }).catch(err => {
+        }).catch(err => {
       if (err) {
         console.error(`WE HAVE AN ERROR IN THE AXIOS CALL`+ err);
       }
     })
+
+    } else {
+        returnSearch = Object.values(req.query)[0]
+        headers = { headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }}
+        console.log('😡', returnSearch)
+        console.log(headers, '🤯')
+        axios.get(`https://api.spotify.com/v1/search?q=${returnSearch}&type=track&market=US&limit=10&offset=5`, headers)
+        .then (res => {
+
+          console.log('&&&&&&&&&&&&&&&&', (res.query));
+        
+          //must have .album.name or .album.uri
+
+          res.json({
+            song: response.data.tracks.items
+          })
+        }).catch(err => {
+          if (err) {
+            console.error(`ERROR IN THE AXIOS Get`+ err);
+          }
+        }).catch(err => {
+      if (err) {
+        console.error(`ERROR IN THE AXIOS CALL`+ err);
+      }
+    })
+  }
 });
 
 
