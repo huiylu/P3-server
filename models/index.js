@@ -1,4 +1,3 @@
-  
 require('dotenv').config();
 const mongoose = require('mongoose');
 
@@ -9,6 +8,8 @@ mongoose.connect(process.env.MONGODB_URI, {
   useFindAndModify: false,
   useCreateIndex: true
 })
+
+mongoose.set('returnOriginal', false);
 
 // Console log on open
 mongoose.connection.once('open', () => 
