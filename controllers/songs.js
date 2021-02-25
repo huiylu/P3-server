@@ -42,7 +42,6 @@ router.get('/token', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-<<<<<<< HEAD
   let queryValues = Object.values(req.query)
   console.log('⏱', token)
   console.log(queryValues[1])
@@ -107,26 +106,6 @@ router.get('/', (req, res) => {
       }
     })
   }
-=======
-  let queryValues = Object.values(req.query);
-  returnSearch = queryValues[0];
-  headers ={headers: {
-  'Authorization': 'Bearer ' + queryValues[1],
-  'Content-Type': 'application/x-www-form-urlencoded'
-  }}
-  axios.get(`https://api.spotify.com/v1/search?q=${returnSearch}&type=track&market=US&limit=10&offset=5` , headers)
-    .then (response => {
-      // console.log('🦀', (response.query));
-      //must have .album.name or .album.uri
-      res.json({
-        song: response.data.tracks.items,
-      })
-    }).catch(err => {
-      if (err) {
-        console.error(`WE HAVE AN ERROR IN THE SECOND AXIOS Get`+ err);
-      }
-    })
->>>>>>> b0c35947f5a985ecf61dcd0c0e43a98a1109989e
 });
 // router.get('/', (req, res) => {
 //   let queryValues = Object.values(req.query)
