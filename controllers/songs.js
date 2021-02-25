@@ -1,56 +1,129 @@
 const express = require('express');
 const db = require('../models');
 const router = express.Router();
+const Playlist = require('../models/playlist');
 const axios = require('axios');
 const querystring = require('querystring')
-
 var client_id = process.env.CLIENT_ID; // Your client id
 var client_secret = process.env.CLIENT_SECRET; // Your secret
-
-var headers = {
-  headers: {
-    'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64')), //Basic <base64 encoded client_id:client_secret>
-    'Content-Type': 'application/x-www-form-urlencoded'
-  }
-}
+var token;
+var returnSearch;
+var headers;
 
 const data = {
   grant_type: 'client_credentials',
-  client_id: client_id,
-  client_secret: client_secret
+  client_id: 'client_id',
+  client_secret: 'client_secret'
+}
+const refreshData = {
+  grant_type: 'refresh_token',
+  refresh_token: 'refresh_token'
 }
 
 //get route to display the searched songs
+router.get('/token', (req, res) => {
+  console.log('hitting the route')
+  headers = {
+    headers: {
+      'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64')), //Basic <base64 encoded client_id:client_secret>
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  }
+  axios.post('https://accounts.spotify.com/api/token', querystring.stringify(data), headers)
+  .then(response => {
+    token = response.data.access_token;
+    res.send(token);
+    console.log(token)
+    console.log(response.data)
+  })
+  .catch( err => {
+    console.error(`🐶WE HAVE AN ERROR IN THE AXIOS CALL`, err);
+  })
+
+})
+
 router.get('/', (req, res) => {
-    axios.post('https://accounts.spotify.com/api/token', querystring.stringify(data),headers)
+  let queryValues = Object.values(req.query)
+  console.log('⏱', token)
+  console.log(queryValues[1])
+  if (queryValues[1] === 'Arthur') {
+    headers = {
+      headers: {
+        'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64')), //Basic <base64 encoded client_id:client_secret>
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }
+    axios.post('https://accounts.spotify.com/api/token', querystring.stringify(data), headers)
     .then(response => {
-      var token = response.data.access_token;
-      console.log(response.data)
-      
-        headers ={headers: {
-          Authorization: 'Bearer ' + token,
+      token = response.data.access_token;
+      returnSearch = queryValues[0]
+      console.log('🔥', returnSearch)
+      console.log(token)
+      headers = {headers: {
+          'Authorization': 'Bearer ' + token,
           'Content-Type': 'application/x-www-form-urlencoded'
-        }};
-        axios.get(`https://api.spotify.com/v1/search?q=${req.body.search}&type=track&market=US&limit=10&offset=5` ,headers)
+        }}
+      })
+      console.log('https://accounts.spotify.com/api/token', querystring.stringify(data), headers)
+      console.log(headers)
+      axios.get(`https://api.spotify.com/v1/search?q=${returnSearch}&type=track&market=US&limit=10&offset=5`, headers)
+      .then(response => {
+        console.log('🌎', token)
+        res.json({
+          song: response.data.tracks.items,
+          spotifyToken: token
+        })
+      }).catch(err => {
+        if (err) {
+          console.error(`🧤WE HAVE AN ERROR IN THE AXIOS Get`, err);
+        }
+    }).catch(err => {
+      if (err) {
+        console.error(`🐶WE HAVE AN ERROR IN THE AXIOS CALL`, err);
+      }
+  })
+    } else {
+      console.log('🌎', token)
+      returnSearch = queryValues[0]
+      headers ={headers: {
+        'Authorization': 'Bearer ' + queryValues[1],
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }}
+        axios.get(`https://api.spotify.com/v1/search?q=${returnSearch}&type=track&market=US&limit=10&offset=5` , headers)
         .then (response => {
-          console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', (response.data));
+          // console.log('🦀', (response.query));
+          //must have .album.name or .album.uri
           res.json({
-            name: response.data.tracks.items[0].album.name,
-            uri: response.data.tracks.items[0].album.uri
+            song: response.data.tracks.items,
+            spotifyToken: token
           })
         }).catch(err => {
           if (err) {
-            console.error(`WE HAVE AN ERROR IN THE AXIOS Get`+ err);
+            console.error(`WE HAVE AN ERROR IN THE SECOND AXIOS Get`+ err);
           }
-        })
-        
-    }).catch(err => {
+        }).catch(err => {
       if (err) {
         console.error(`WE HAVE AN ERROR IN THE AXIOS CALL`+ err);
       }
-      
     })
+  }
 });
 
+router.post('/', (req, res)=>{
+  Playlist.findById(req.body.id, (err, playlist)=>{
+    if(err) {
+      console.error(`Error in the GET ID for playlists\n${err}`);
+      res.status(500).json({error: `Error in the Detail ROUTE for playlists`});
+    } else {
+      playlist.songs.push({
+        name: req.body.name,
+        spotify_id: req.body.spotify_id,
+        spotify_uri: req.body.uri
+      });
+      console.log(playlist);
+    }
+  })
+
+})
 
 module.exports = router;
