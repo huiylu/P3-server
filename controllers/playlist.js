@@ -60,12 +60,6 @@ router.put('/:id', (req, res) => {
     )
 });
 
-//get route that lets you edit the playlist (name etc)
-router.get('/:id', (req, res) => {
-    // res.json({ message: 'PLAYLIST ID EDIT'});
-    
-});
-
 //delete rout lets you delete a playlist
 router.delete('/:id', (req, res) => {
     // res.json({ message: 'PLAYLIST ID DELETE'});
