@@ -32,7 +32,7 @@ router.post('/login', (req, res) => {
   db.User.findOne({ email: req.body.email })
     .then(user => {
       // create and send a token via createUserToken
-      res.status(201).json({
+      res.status(201).send({
         token: createUserToken(req, user),
         user: user
       });
