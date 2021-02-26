@@ -53,11 +53,20 @@ router.get('/', (req, res) => {
     .then (response => {
       res.json({
         song: response.data.tracks.items,
+<<<<<<< HEAD
       })
+=======
+        })
+>>>>>>> 3d94b7d63e63452ef66906a9df07bae7c1ae54d5
     }).catch(err => {
       if (err) {
         console.error(`WE HAVE AN ERROR IN THE SECOND AXIOS Get`+ err);
       }
     })
 });
+<<<<<<< HEAD
+=======
+        
+
+>>>>>>> 3d94b7d63e63452ef66906a9df07bae7c1ae54d5
 module.exports = router;
