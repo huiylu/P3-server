@@ -63,13 +63,21 @@ router.put('/:id', (req, res) => {
 
 //delete rout lets you delete a playlist
 router.delete('/:id', (req, res) => {
-    // res.json({ message: 'PLAYLIST ID DELETE'});
+    console.log(req.params.id, '👻')
     Playlist.findByIdAndDelete(req.params.id, (err, playlist) => {
         if(err) {
             console.error(`ERROR in the playlist DELETE ROUTE\n${err}`);
             res.status(500).json({error: `ERROR in the playlists DELETE ROUTE`});
         }
-        res.json({deletedPlaylist: playlist})
+        console.log(playlist, '$$$$$$')
+        console.log(req.params._id, '%%%%%%%')
+        console.log(req.body.id)
+        console.log(req.body.i)
+        console.log(req.body)
+        console.log(req.params)
+        console.log(req.params.title)
+        console.log(req.params.id)
+        // res.json({deletedPlaylist: playlist})
     })
 })
 
