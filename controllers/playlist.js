@@ -19,14 +19,15 @@ router.get('/', (req, res) => {
 //post route allows you to create a new playlist
 router.post('/', (req, res) => {
     // res.json({ message: 'PLAYLIST POST'});
-    Playlist.create(req.body.title, (err, playlist) => {
-        if(err) {
-            console.error(`POST route is not working for the playlists\n${err}`);
-            res.status(500).json({error: `ERROR in the Playlist POST ROUTE`});
-        }
-        res.json({playlist});
-    })
 
+    Playlist.create(req.body) 
+    .then(playlist => {
+        console.log(playlist)
+        res.json(playlist)
+    }).catch(err => {
+        console.log(err)
+
+    })
 });
 
 
