@@ -27,9 +27,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  // playlist: {
-  //   type: [playlistSchema]
-  // }
+  playlist: {
+    type: mongoose.Schema.Types.ObjectId, ref: 'Playlist'
+  }
 }, options);
 
 module.exports = mongoose.model('User', userSchema);
