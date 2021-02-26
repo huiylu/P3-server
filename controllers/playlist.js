@@ -45,21 +45,21 @@ router.get('/:id', (req, res) => {
 });
 
 //put route that allows you to  update the individual playlists
-router.put('/:id', (req, res) => {
-    // res.json({ message: 'PLAYLIST ID UPDATE'});
-    Playlist.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true },
-        (err, playlist) => {
-            if(err) {
-                console.error(`Error in the UPDATE ROUTE for PLAYLISTS\n${err}`);
-                return res.status(500).json({error: `Error in the UPDATE ROUTE for PLAYLISTS`})
-            }
-            res.json({playlist})
-        }
-    )
-});
+// router.put('/:id', (req, res) => {
+//     // res.json({ message: 'PLAYLIST ID UPDATE'});
+//     Playlist.findByIdAndUpdate(
+//         songs: req.params.songs,
+//         // req.body,
+//         { new: true },
+//         (err, playlist) => {
+//             if(err) {
+//                 console.error(`Error in the UPDATE ROUTE for PLAYLISTS\n${err}`);
+//                 return res.status(500).json({error: `Error in the UPDATE ROUTE for PLAYLISTS`})
+//             }
+//             res.json({playlist})
+//         }
+//     )
+// });
 
 //delete rout lets you delete a playlist
 router.delete('/:id', (req, res) => {
@@ -69,16 +69,7 @@ router.delete('/:id', (req, res) => {
             console.error(`ERROR in the playlist DELETE ROUTE\n${err}`);
             res.status(500).json({error: `ERROR in the playlists DELETE ROUTE`});
         }
-
-        // console.log(res.json)
         console.log(playlist, '$$$$$$')
-        // console.log(req.params._id, '%%%%%%%')
-        // console.log(req.body.id)
-        // console.log(req.body.i)
-        // console.log(req.body)
-        // console.log(req.params)
-        // console.log(req.params.title)
-        // console.log(req.params.id)
         res.json({deletedPlaylist: playlist})
     })
 })
