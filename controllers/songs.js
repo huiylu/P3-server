@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('../models');
 const router = express.Router();
+const Playlist = require('../models/playlist');
 const axios = require('axios');
 const querystring = require('querystring')
 var client_id = process.env.CLIENT_ID; // Your client id
@@ -52,12 +53,13 @@ router.get('/', (req, res) => {
     .then (response => {
       res.json({
         song: response.data.tracks.items,
-      })
+        })
     }).catch(err => {
       if (err) {
         console.error(`WE HAVE AN ERROR IN THE SECOND AXIOS Get`+ err);
       }
     })
 });
+        
 
 module.exports = router;

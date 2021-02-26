@@ -19,12 +19,14 @@ router.get('/', (req, res) => {
 //post route allows you to create a new playlist
 router.post('/', (req, res) => {
     // res.json({ message: 'PLAYLIST POST'});
+
     Playlist.create(req.body) 
     .then(playlist => {
         console.log(playlist)
         res.json(playlist)
     }).catch(err => {
         console.log(err)
+
     })
 });
 
@@ -57,12 +59,6 @@ router.put('/:id', (req, res) => {
             res.json({playlist})
         }
     )
-});
-
-//get route that lets you edit the playlist (name etc)
-router.get('/:id', (req, res) => {
-    // res.json({ message: 'PLAYLIST ID EDIT'});
-    
 });
 
 //delete rout lets you delete a playlist
