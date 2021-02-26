@@ -51,33 +51,15 @@ router.get('/', (req, res) => {
   }}
   axios.get(`https://api.spotify.com/v1/search?q=${returnSearch}&type=track&market=US&limit=10&offset=5` , headers)
     .then (response => {
-      // console.log('🦀', (response.query));
-      //must have .album.name or .album.uri
       res.json({
         song: response.data.tracks.items,
-      })
+        })
     }).catch(err => {
       if (err) {
         console.error(`WE HAVE AN ERROR IN THE SECOND AXIOS Get`+ err);
       }
     })
 });
-
-router.post('/', (req, res)=>{
-  Playlist.findById(req.body.id, (err, playlist)=>{
-    if(err) {
-      console.error(`Error in the GET ID for playlists\n${err}`);
-      res.status(500).json({error: `Error in the Detail ROUTE for playlists`});
-    } else {
-      playlist.songs.push({
-        name: req.body.name,
-        spotify_id: req.body.spotify_id,
-        spotify_uri: req.body.uri
-      });
-      console.log(playlist);
-    }
-  })
-
-})
+        
 
 module.exports = router;
