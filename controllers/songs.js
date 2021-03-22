@@ -60,6 +60,25 @@ router.get('/', (req, res) => {
       }
     })
 });
+
+router.post('/', (req, res)=>{
+  Playlist.findById(req.body.id, (err, playlist)=>{
+    if(err) {
+      console.error(`Error in the GET ID for playlists\n${err}`);
+      res.status(500).json({error: `Error in the Detail ROUTE for playlists`});
+    } else {
+      playlist.songs.push({
+        name: req.body.name,
+        spotify_id: req.body.spotify_id,
+        spotify_uri: req.body.uri
+      });
+      console.log(playlist);
+      playlist.save(err => {
+        if(err) return console.log(err)
+    });
+    }
+  })
+});
         
 
 module.exports = router;
